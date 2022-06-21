@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./css/main.css" />
+        <title>Auth with TOTP</title>
+    </head>
+    <body>
+        <div class="container" id="vapp">
+            <div class="box" v-if="currentPage == 'register'">
+                <div v-if="registerForm.qrCode === ''">
+                    <h1 class="centered-text">Register</h1>
+                    <input
+                        type="text"
+                        placeholder="Full name"
+                        class="form-control mt2"
+                        v-model="registerForm.fullname"
+                    />
+                    <input
+                        type="email"
+                        placeholder="E-mail"
+                        class="form-control mt2"
+                        v-model="registerForm.email"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        class="form-control mt2"
+                        v-model="registerForm.password"
+                    />
+                    <div class="d-flex flex-direction-row align-items-center mt2">
+                        <button class="btn btn-success" v-on:click="register">Register</button>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;</p>
+                        <button class="btn" v-on:click="changeCurrentPage('login')">Login</button>
+                    </div>
+                </div>
+                <div v-if="registerForm.qrCode !== ''">
+                    <img v-bind:src="registerForm.qrCode" style="width: 100%" />
+                    <p>Scan the QR with authenticator and then login:</p>
+                    <button class="btn btn-success mt2" v-on:click="changeCurrentPage('login')">
+                        Login
+                    </button>
+                </div>
+            </div>
+
+            <div class="box" v-if="currentPage == 'login'">
+                <div v-if="!loginForm.success">
+                    <h1 class="centered-text">Login</h1>
+                    <input
+                        type="email"
+                        placeholder="E-mail"
+                        class="form-control mt2"
+                        v-model="loginForm.email"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        class="form-control mt2"
+                        v-model="loginForm.password"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Token"
+                        class="form-control mt2"
+                        v-model="loginForm.token"
+                    />
+                    <div class="d-flex flex-direction-row align-items-center mt2">
+                        <button class="btn btn-success" v-on:click="login">Login</button>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;</p>
+                        <button class="btn" v-on:click="changeCurrentPage('register')">
+                            Register
+                        </button>
+                    </div>
+                </div>
+                <div v-if="loginForm.success">
+                    <h1 class="centered-text" style="padding: 20px;background: lightgreen;">Successful login</h1>
+                </div>
+            </div>
+        </div>
+
+        <script src="./js/vue.js"></script>
+        <script src="./js/main.js"></script>
+    </body>
+</html>
